@@ -8,7 +8,10 @@ const nextConfig = {
       new NextFederationPlugin({
         name: "host",
         filename: "static/chunks/remoteEntry.js",
-        remotes: {},
+        remotes: {
+          remote:
+            "remote@http://localhost:3001/_next/static/chunks/remoteEntry.js",
+        },
         exposes: {},
         shared: {},
       })
