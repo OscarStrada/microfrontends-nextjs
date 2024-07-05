@@ -4,16 +4,10 @@ import styles from "@/styles/Home.module.css";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const LazyButton = dynamic(
-  () =>
-    import("remote/Button").catch(() => ({
-      default: () => <p>Failed to load</p>,
-    })),
-  {
-    ssr: false,
-    loading: () => <p>Loading...</p>,
-  }
-);
+const RemoteButton = dynamic(() => import("remote/Button"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/hello");
+        const response = await fetch("http://localhost:3001/api/profile");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -50,14 +44,14 @@ export default function Home() {
         <h1>Home app</h1>
         <p>Message from remote: {message}</p>
 
-        <LazyButton />
+        <RemoteButton />
       </main>
     </>
   );
 }
 
-export const getServerSideProps = async () => {
+export async function getServerSideProps() {
   return {
     props: {},
   };
-};
+}
